@@ -1,0 +1,33 @@
+a {
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.login, .signup {
+  height: 2.5rem;
+  width: 7rem;
+  line-height: 2.5rem;
+  font-size: 20;
+  font-weight: bold;
+  text-align: center;
+  border-radius: 10px;
+}
+
+.login {
+  background: blue;
+  color: white;
+}
+
+.signup {
+  background: white;
+  color: blue;
+  border: 1px solid blue;
+}
+
+.login:hover {
+  background: rgb(69, 140, 255);
+}
+
+.signup:hover {
+  background: rgb(234, 234, 255);
+}
