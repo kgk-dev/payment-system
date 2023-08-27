@@ -1,8 +1,13 @@
-import { Typography, TextField, Button, Box } from "@mui/material"
+import {
+  Typography,
+  TextField,
+  Button,
+  Box
+} from "@mui/material"
 import { useSubmit } from "react-router-dom"
 import { Formik } from "formik"
 import * as yup from "yup"
-
+import { API } from "../../api"
 
 const validationSchema = yup.object({
   otp: yup
@@ -25,8 +30,17 @@ export default function LoginStep2() {
           otp: ""
         }}
         validationSchema={validationSchema}
-        onSubmit={(values) => {
-          submit(values, { method: "post" })
+        onSubmit={({ otp }, { setSubmitting }) => {
+          setSubmitting(true)
+          API.post('/login/2', { otp })
+            .then(() => {
+              setSubmitting(false)
+              submit(null, { method: "post" })
+            })
+            .catch((error) => {
+              console.log("[Login] error 2", error)
+              setSubmitting(false)
+            })
         }}
       >
         {({
@@ -38,7 +52,7 @@ export default function LoginStep2() {
           handleSubmit,
           isSubmitting,
         }) => (
-          <form method="post" onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit}>
             <Box minHeight="5rem">
               <TextField
                 id="otp"
@@ -51,7 +65,11 @@ export default function LoginStep2() {
                 helperText={touched.otp && errors.otp}
               />
             </Box>
-            <Button type="submit" variant="contained" >
+            <Button
+              type="submit"
+              variant="contained"
+              disabled={isSubmitting}
+            >
               continue
             </Button>
           </form>

@@ -3,9 +3,10 @@ import { grey } from '@mui/material/colors'
 import { Formik } from 'formik'
 import * as yup from 'yup'
 import { useSubmit } from 'react-router-dom'
+import { API } from '../../api'
 
 const validationSchema = yup.object({
-  phno: yup
+  phoneNumber: yup
     .string()
     .matches(/^9[0-9]{3}[0-9]{6}$/, 'Invalid phone number')
     .required('Phone number is required')
@@ -13,6 +14,7 @@ const validationSchema = yup.object({
 
 export default function SignupStep1() {
   const submit = useSubmit()
+
   return (
     <>
       <Typography variant='h5' fontWeight='bold'>
@@ -23,11 +25,23 @@ export default function SignupStep1() {
       </Typography>
       <Formik
         initialValues={{
-          phno: ''
+          phoneNumber: ''
         }}
         validationSchema={validationSchema}
-        onSubmit={async (values) => {
-          submit(values, { method: 'post' })
+        onSubmit={({ phoneNumber }, { setSubmitting }) => {
+          setSubmitting(true)
+          API.post('/signup',
+            {
+              phoneNumber: "+95" + phoneNumber
+            })
+            .then((res) => {
+              console.log("data: ", res.data.otp)
+              setSubmitting(false)
+              submit(null, { method: 'post' })
+            })
+            .catch(() => {
+              setSubmitting(false)
+            })
         }}
       >
         {({
@@ -37,7 +51,7 @@ export default function SignupStep1() {
           handleChange,
           handleBlur,
           handleSubmit,
-          // isSubmitting,
+          isSubmitting,
         }) => (
           <form method='post' onSubmit={handleSubmit}>
             <Box display='flex' justifyContent='center' minHeight='5rem'>
@@ -53,17 +67,20 @@ export default function SignupStep1() {
                 +95
               </Typography>
               <TextField
-                id='phno'
-                name='phno'
+                id='phoneNumber'
+                name='phoneNumber'
                 label='Phone Number'
-                value={values.phno}
+                value={values.phoneNumber}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                error={touched.phno && Boolean(errors.phno)}
-                helperText={touched.phno && errors.phno}
+                error={touched.phoneNumber && Boolean(errors.phoneNumber)}
+                helperText={touched.phoneNumber && errors.phoneNumber}
               />
             </Box>
-            <Button type='submit' variant='contained'>
+            <Button type='submit'
+              variant='contained'
+              disabled={isSubmitting}
+            >
               continue
             </Button>
           </form>

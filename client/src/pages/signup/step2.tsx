@@ -2,6 +2,7 @@ import { Typography, TextField, Button, Box } from '@mui/material'
 import { useSubmit } from 'react-router-dom'
 import { Formik } from 'formik'
 import * as yup from 'yup'
+import { API } from '../../api'
 
 const validationSchema = yup.object({
   otp: yup
@@ -12,6 +13,7 @@ const validationSchema = yup.object({
 
 export default function SignupStep2() {
   const submit = useSubmit()
+
   return (
     <>
       <Typography variant='h6' component={'h6'} mb={7}>
@@ -23,8 +25,13 @@ export default function SignupStep2() {
           otp: ''
         }}
         validationSchema={validationSchema}
-        onSubmit={(values) => {
-          submit(values, { method: 'post' })
+        onSubmit={({ otp }, { setSubmitting }) => {
+          setSubmitting(true)
+          API.post('/signup/2', { otp })
+            .then(() => {
+              setSubmitting(false)
+              submit(null, { method: 'post' })
+            })
         }}
       >
         {({

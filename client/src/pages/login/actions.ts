@@ -5,5 +5,6 @@ export async function one() {
 }
 
 export async function two() {
-  return redirect('/')
+  console.log("called actino two")
+  return redirect('/users')
 }

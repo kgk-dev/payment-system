@@ -2,16 +2,18 @@ import { Typography, TextField, Button, Box } from '@mui/material'
 import { Formik } from 'formik'
 import { useSubmit } from 'react-router-dom'
 import * as yup from 'yup'
+import { API } from '../../api'
 
 const validationSchema = yup.object({
   password: yup
     .string()
-    .matches(/[0-9]{6}/, 'Password must be 6 numbers')
+    .length(6, "Password must be 6 digits")
     .required('Password is required')
 })
 
 export default function SignupStep3() {
   const submit = useSubmit()
+
   return (
     <>
       <Typography variant='h6' component={'h6'} mb={7}>
@@ -22,8 +24,13 @@ export default function SignupStep3() {
           password: ''
         }}
         validationSchema={validationSchema}
-        onSubmit={async (values) => {
-          submit(values, { method: 'post' })
+        onSubmit={({ password }, { setSubmitting }) => {
+          setSubmitting(true)
+          API.post('/signup/3', { password })
+            .then(() => {
+              setSubmitting(false)
+              submit(null, { method: 'post' })
+            })
         }}
       >
         {({

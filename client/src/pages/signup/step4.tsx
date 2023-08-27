@@ -10,9 +10,10 @@ import { Formik } from "formik"
 import * as yup from "yup"
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto'
 import { useSubmit } from "react-router-dom"
+import { API } from "../../api"
 
 const gender = ["Male", "Female"]
-const stateNums = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+const stateNums = "1,2,3,4,5,6,7,8,9,10,11,12,13,14".split(',')
 const district = [
   "TASANA",
   "KABALA",
@@ -24,19 +25,19 @@ const district = [
 ].sort()
 
 const validationSchema = yup.object({
-  fullname: yup
+  name: yup
     .string()
     .required("Enter your name"),
   gender: yup
     .string()
     .required("Please select your gender"),
-  stateNo: yup
+  state: yup
     .string()
     .required("*****"),
   district: yup
     .string()
     .required("*****"),
-  registerNo: yup
+  registerNumber: yup
     .string()
     .matches(/[0-9]{6}/, "Invalid registration number")
     .required("Enter your registration number"),
@@ -54,16 +55,19 @@ export default function SignupStep4() {
       </Typography>
       <Formik
         initialValues={{
-          fullname: "",
+          name: "",
           gender: "",
-          stateNo: "",
+          state: "",
           district: "",
-          registerNo: "",
+          registerNumber: "",
           address: "",
         }}
         validationSchema={validationSchema}
         onSubmit={(values) => {
-          submit(values, { method: "post" })
+          API.post('/signup/4', { values })
+            .then(() => {
+              submit(values, { method: "post" })
+            })
         }}
       >
         {({
@@ -80,14 +84,14 @@ export default function SignupStep4() {
           }}>
             <TextField
               fullWidth
-              id="fullname"
-              label="Fullname"
-              name="fullname"
-              value={values.fullname}
+              id="name"
+              label="FullName"
+              name="name"
+              value={values.name}
               onChange={handleChange}
               onBlur={handleBlur}
-              error={touched.fullname && Boolean(errors.fullname)}
-              helperText={touched.fullname && errors.fullname}
+              error={touched.name && Boolean(errors.name)}
+              helperText={touched.name && errors.name}
               sx={{ minHeight: "5rem" }}
             />
             <TextField
@@ -112,13 +116,13 @@ export default function SignupStep4() {
             <Box display="flex" component="div" minHeight="5rem">
               <TextField
                 select
-                id="stateNo"
-                name="stateNo"
-                value={values.stateNo}
+                id="state"
+                name="state"
+                value={values.state}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                error={touched.stateNo && Boolean(errors.stateNo)}
-                helperText={touched.stateNo && errors.stateNo}
+                error={touched.state && Boolean(errors.state)}
+                helperText={touched.state && errors.state}
                 sx={{ width: 70 }}
               >
                 {stateNums.map((state) => (
@@ -159,13 +163,13 @@ export default function SignupStep4() {
                 }}
               />
               <TextField
-                id="registerNo"
+                id="registerNumber"
                 label="Register Number"
-                name="registerNo"
-                value={values.registerNo}
+                name="registerNumber"
+                value={values.registerNumber}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                error={touched.registerNo && Boolean(errors.registerNo)}
+                error={touched.registerNumber && Boolean(errors.registerNumber)}
               />
             </Box>
             <TextField
