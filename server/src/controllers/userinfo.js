@@ -9,6 +9,7 @@ const get = handler(
     return res.status(200).json({
       name: data.user.name,
       balance: data.balance,
+      phoneNumber: data.id
     })
   },
   500,

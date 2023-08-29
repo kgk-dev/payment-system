@@ -1,40 +1,44 @@
-import { Box, Button } from "@mui/material"
-import { API } from "../../api"
+import { Box, Typography } from "@mui/material"
 import { UserInfoContextValues, useUserInfo } from "../../providers/userInfoProvider"
-import { redirect, useSubmit } from "react-router-dom"
+import { redirect } from "react-router-dom"
+import { Person } from "@mui/icons-material"
 
 export function action() {
   return redirect('/login')
 }
 
 const Profile = () => {
-  const submit = useSubmit()
-  const { setUserInfo } = useUserInfo() as UserInfoContextValues
+  const { userInfo } = useUserInfo() as UserInfoContextValues
   return (
-    <Box display="flex" flexDirection="column" justifyContent="space-around">
-      <table border={2} cellSpacing={0}>
-        <tr>
-          <td>Name</td>
-          <td>Mg Kaung Min Htet</td>
-        </tr>
-        <tr>
-          <td>Phone number</td>
-          <td>+959777360903</td>
-        </tr>
-      </table>
-      <form
-        method="post"
-        onSubmit={(e: React.FormEvent) => {
-          e.preventDefault()
-          API.get('/logout')
-            .then(() => {
-              setUserInfo({ name: '', balance: 0 })
-              submit(null, { method: "post" })
-            })
-        }}
+    <Box
+      display="flex"
+      flexDirection="column"
+      justifyContent="center"
+      alignItems="center"
+      textAlign="center"
+    >
+      <div style={{
+        marginTop: 50,
+        height: "5rem",
+        width: "5rem",
+      }}
       >
-        <Button type="submit" variant="contained">Logout</Button>
-      </form>
+        <Person sx={{
+          color: "primary.main",
+          scale: "5"
+        }} />
+      </div>
+      <div>
+        <Typography
+          variant='h6'
+          fontWeight="bold"
+          fontSize={20}
+        >
+          {userInfo.name}
+        </Typography>
+        <p>My Balance: {userInfo.balance} Kyat</p>
+        <p>Phone Number: {userInfo.phoneNumber}</p>
+      </div>
     </Box>
   )
 }

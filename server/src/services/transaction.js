@@ -22,15 +22,6 @@ const get = async (id) => {
   })
 }
 
-// create({
-//   amount: "500",
-//   date: new Date().toISOString(),
-//   senderId: "+959777360903",
-//   receiverId: "+959251156582"
-// }).then((res) => console.log(
-//   "[create] response: ", res
-// ))
-
 module.exports = {
   create,
   get,

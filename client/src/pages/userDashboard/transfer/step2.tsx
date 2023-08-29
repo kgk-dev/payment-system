@@ -33,10 +33,12 @@ const Step1 = () => {
         width: "20rem",
         display: "flex",
         flexDirection: "column",
+        alignItems: "center",
       }}
     >
       <TextField
         fullWidth
+        margin="normal"
         name="amount"
         label="Amount"
         value={formik.values.amount}

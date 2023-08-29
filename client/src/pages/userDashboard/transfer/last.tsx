@@ -33,6 +33,7 @@ const Last = () => {
         width: "20rem",
         display: "flex",
         flexDirection: "column",
+        alignItems: "center",
       }}
     >
       <Typography variant="body1">

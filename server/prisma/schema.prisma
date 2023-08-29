@@ -44,3 +44,8 @@ model Transaction {
   receiver   Account  @relation("ReceiverTransaction", fields: [receiverId], references: [id])
   receiverId String
 }
+
+model Admin {
+  id       String @id
+  password String
+}

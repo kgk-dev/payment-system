@@ -13,10 +13,12 @@ import Step3,
 import Last, { action as Action4 } from "../pages/userDashboard/transfer/last";
 import Profile, { action as ProfileAction } from "../pages/profile";
 import Chat from "../pages/chat";
+import Error from "../pages/error";
 
 const router: RouteObject = {
   path: '/users',
   element: <UserDashboard />,
+  errorElement: <Error />,
   children: [
     {
       path: '/users',

@@ -4,8 +4,7 @@ import Features from './features'
 import { UserInfo } from '../../../providers/userInfoProvider'
 import { Link } from 'react-router-dom'
 
-const UserData = (data: UserInfo) => {
-  console.log("user data: ", data)
+const UserData = ({ name, balance, phoneNumber }: UserInfo) => {
   return (
     <Grid container spacing={2}>
       <Grid item>
@@ -23,10 +22,10 @@ const UserData = (data: UserInfo) => {
       </Grid>
       <Grid item>
         <Typography variant='h6' fontWeight='bold'>
-          {data.name}
+          {name}
         </Typography>
         <Typography variant='subtitle1'>
-          {data.balance} <span style={{ fontSize: '0.7rem' }}>kyat</span>
+          {balance} <span style={{ fontSize: '0.7rem' }}>kyat</span>
         </Typography>
       </Grid>
       <Grid

@@ -2,7 +2,10 @@ import { Button, TextField } from "@mui/material"
 import { useFormik } from "formik"
 import { redirect, useSubmit } from "react-router-dom"
 import { API } from "../../../api"
-import { TransferContextValue, useTransfer } from "../../../providers/transferProvider"
+import {
+  TransferContextValue,
+  useTransfer
+} from "../../../providers/transferProvider"
 export function action() {
   return redirect("/users/transfer/2",)
 }
@@ -34,10 +37,12 @@ const Step1 = () => {
         width: "20rem",
         display: "flex",
         flexDirection: "column",
+        alignItems: "center",
       }}
     >
       <TextField
         fullWidth
+        margin="normal"
         name="receiver"
         label="Phone Number"
         value={formik.values.receiver}
