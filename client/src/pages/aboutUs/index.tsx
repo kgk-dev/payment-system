@@ -23,7 +23,7 @@ export default function Aboutus() {
       <Typography
         variant="subtitle1"
       >
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ut inventore nostrum asperiores doloribus exercitationem repellendus, eos illum dolor laboriosam accusantium consectetur ipsum distinctio consequatur officia tempora est modi! Animi, repellendus.
+        Welcome to Payment System founded in 2023. Our mission is simple: to simplify the complexities of financial transactions, making it easier for our clients to focus on what you do best.
       </Typography>
     </Grid>
   )

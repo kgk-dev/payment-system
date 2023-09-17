@@ -1,4 +1,4 @@
-import { Button, Typography } from "@mui/material"
+import { Box, Button, Typography } from "@mui/material"
 import { FormEvent } from "react"
 import { redirect, Form, useSubmit } from "react-router-dom"
 import { TransferContextValue, useTransfer } from "../../../providers/transferProvider"
@@ -36,9 +36,11 @@ const Last = () => {
         alignItems: "center",
       }}
     >
-      <Typography variant="body1">
-        Successful transfer
-      </Typography>
+      <Box minHeight="5rem">
+        <Typography variant="body1">
+          Successful transfer
+        </Typography>
+      </Box>
       <Button type="submit" variant="contained">Finish</Button>
     </Form>
   )

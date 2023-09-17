@@ -9,6 +9,7 @@ function userModel({
 }) {
   return ({
     data: {
+      userId: phoneNumber,
       name,
       gender,
       address,
@@ -19,7 +20,6 @@ function userModel({
           registerNumber,
         }
       },
-      phoneNumber,
     }
   })
 }

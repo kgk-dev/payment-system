@@ -8,22 +8,25 @@ import {
 } from '@mui/material'
 import { useFormik } from 'formik'
 import theme from '../theme'
-import { Navigate } from 'react-router-dom'
 import { API } from '../../../api'
-import { useState } from 'react'
+import { redirect, useSubmit } from 'react-router-dom'
+
+export function action() {
+  return redirect("/admin")
+}
 
 export default function AdminLogin() {
-  const [isLogin, setIsLogin] = useState(false)
+  const submit = useSubmit()
   const formik = useFormik({
     initialValues: {
-      userId: '',
+      adminId: '',
       password: '',
     },
-    onSubmit: ({ userId, password }) => {
-      API.post('/admin/login', { userId, password })
+    onSubmit: ({ adminId, password }) => {
+      API.post('/admin/login', { adminId, password })
         .then((data) => {
           console.log("data", data)
-          setIsLogin(true)
+          submit(null, { method: "post" })
         })
         .catch((error) => {
           console.log("[error] admin login", error)
@@ -33,9 +36,6 @@ export default function AdminLogin() {
 
   return (
     <ThemeProvider theme={theme}>
-      {isLogin && (
-        <Navigate to="/admin" replace={true} />
-      )}
       <Box
         height='100vh'
         display='flex'
@@ -63,9 +63,9 @@ export default function AdminLogin() {
           >
             <TextField
               margin='normal'
-              name='userId'
+              name='adminId'
               label='UserId'
-              value={formik.values.userId}
+              value={formik.values.adminId}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
             />

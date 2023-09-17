@@ -7,7 +7,7 @@ module.exports = async (req, res, next) => {
     console.error("error: ", err)
     console.log("payload: ", payload)
     if (err) return res.status(403).end()
-    req.body['phoneNumber'] = payload.id
+    req.body['adminId'] = payload.id
     next()
   })
 }

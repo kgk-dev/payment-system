@@ -6,42 +6,15 @@ import { Avatar, Box, Grid, Typography } from '@mui/material'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { FreeMode, Pagination } from 'swiper/modules'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'
-
-const fds = [
-  {
-    name: "Name One",
-    img: "Image",
-    msg: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Dignissimos eveniet a at, architecto vitae, nostrum sapiente velit quisquam sed enim quae aut explicabo aspernatur fugit! Temporibus porro optio beatae maiores."
-  },
-  {
-    name: "Name Two",
-    img: "Image",
-    msg: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam nam quod iure nulla iusto, natus, cumque et officiis rem quae dolores, suscipit accusantium minima! Rerum voluptates pariatur voluptatum quaerat nobis."
-  },
-  {
-    name: "Name Three",
-    img: "Image",
-    msg: "Lorem ipsum dolor sit amet consectetur, adipisicing elit.Necessitatibus hic dolor inventore magni animi tenetur asperiores unde quisquam ex quos."
-  },
-  {
-    name: "Name Four",
-    img: "Image",
-    msg: "Accusantium iste sit mollitia accusamus. Quia veniam soluta cumque. Eum repellat ex, iste, nesciunt corporis repellendus iure expedita, eligendi aperiam quos unde."
-  },
-  {
-    name: "Name Five",
-    img: "Image",
-    msg: "Soluta, ducimus adipisci recusandae nisi nihil numquam dicta quos quia unde ipsam omnis exercitationem ut sunt, dolorem impedit. Cumque deleniti modi eveniet."
-  },
-]
+import { useEffect, useState } from 'react'
+import { API } from '../../api'
 
 type FeedbackCardProps = {
   name: string
-  image: string
-  msg: string
+  message: string
 }
 
-function FeedbackCard({ image, name, msg }: FeedbackCardProps) {
+function FeedbackCard({ name, message }: FeedbackCardProps) {
   return (
     <Grid
       container
@@ -54,14 +27,17 @@ function FeedbackCard({ image, name, msg }: FeedbackCardProps) {
       color={"white"}
     >
       <Grid item>
-        <Avatar>
+        <Avatar sx={{
+          height: "4rem",
+          width: "4rem",
+        }}>
           <AccountCircleIcon sx={{
-            scale: "1.5"
+            scale: "3"
           }} />
         </Avatar>
       </Grid>
       <Grid item>
-        {msg}
+        {message}
       </Grid>
       <Grid item>
         <Typography variant='h6'>
@@ -73,6 +49,19 @@ function FeedbackCard({ image, name, msg }: FeedbackCardProps) {
 }
 
 export default function Feedbacks() {
+  const [feedbacks, setFeedbacks] = useState<FeedbackCardProps[]>([])
+
+  useEffect(() => {
+    API.get('/feedbacks')
+      .then((res) => {
+        console.log(res.data.feedbacks)
+        setFeedbacks([...res.data.feedbacks])
+      })
+      .catch((error) => {
+        console.log("Error in feedback: ", error)
+      })
+  }, [])
+
   return (
     <Grid item height={500} >
       <Box
@@ -93,12 +82,11 @@ export default function Feedbacks() {
           className="mySwiper"
         >
           {
-            fds.map((fd) => (
-              <SwiperSlide key={fd.msg}>
+            feedbacks.map((feedback) => (
+              <SwiperSlide key={feedback.message}>
                 <FeedbackCard
-                  image={fd.img}
-                  name={fd.name}
-                  msg={fd.msg}
+                  name={feedback.name}
+                  message={feedback.message}
                 />
               </SwiperSlide>
             ))

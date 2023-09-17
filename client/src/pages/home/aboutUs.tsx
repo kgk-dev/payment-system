@@ -15,7 +15,7 @@ export default function AboutUs() {
             sx={{
               textAlign: "center",
               fontWeight: "bold",
-              color: "blue",
+              color: "primary.main",
             }}>
             About Us
           </Typography>
@@ -26,7 +26,8 @@ export default function AboutUs() {
             sx={{
               textAlign: "justify",
             }}
-          > Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure natus qui facilis eligendi tempore commodi dolores laborum dolor aliquam doloremque, sed atque alias, architecto eaque aspernatur modi sequi exercitationem culpa.Lorem ipsum dolor sit amet consectetur, adipisicing elit. Facere, neque doloremque. Sit modi eaque natus sint eius repellendus excepturi minus rerum rem praesentium, saepe consequuntur amet! Minus culpa modi quae.
+          >
+            Welcome to Payment System founded in 2023. Our mission is simple: to simplify the complexities of financial transactions, making it easier for our clients to focus on what you do best.
           </Typography>
         </Box>
       </Container>

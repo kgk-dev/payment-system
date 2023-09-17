@@ -1,6 +1,7 @@
 import { Container, Grid, createTheme, ThemeProvider } from '@mui/material'
 import { Outlet } from 'react-router-dom'
 import Logo from '../../components/logo'
+import OTPProvider from '../../providers/otpProvider'
 
 const theme = createTheme()
 
@@ -23,9 +24,12 @@ export default function Signup() {
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
+              color: 'primary.main',
             }}
           >
-            <Outlet />
+            <OTPProvider>
+              <Outlet />
+            </OTPProvider>
           </Container>
         </Grid>
       </Grid>

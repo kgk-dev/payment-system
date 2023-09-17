@@ -4,22 +4,19 @@ import WarningIcon from '@mui/icons-material/Warning';
 const images = [
   "https://wavemoney.com.mm/assets/img/keep-your-pin-safe.png",
   "https://wavemoney.com.mm/assets/img/do-not-share-your-OTP@2x.png",
-  "https://wavemoney.com.mm/assets/img/beware-img@2x.png",
-  "https://wavemoney.com.mm/assets/img/svg-we-with-you.svg",
+  "https://wavemoney.com.mm/assets/img/beware-img@2x.png"
 ]
 
 const titles = [
   "KEEP YOUR PIN SAFE",
   "DO NOT SHARE YOUR OTP WITH ANYONE",
   "BEWARE OF FRAUDSTERS",
-  "WE ARE READY TO ASSIST YOU"
 ]
 
 const messages = [
   "Your 6-digit PIN is set to protect every transaction you make via Pay account. To secure your Pay account, do not share your PIN with anyone.",
   "OTP is a 6-digit system generated temporary secret code automatically sent via SMS. To secure your Pay account, do not share your OTP with anyone.",
   "Fraudsters can be anywhere! Keep your Transaction ID, Secret Code, PIN, OTP, mobile number and your personal information safe.",
-  "Connect via Chat Bot with us, if you have any problem.",
 ]
 
 type TipProps = {

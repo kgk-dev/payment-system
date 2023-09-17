@@ -1,14 +1,12 @@
 import {
   Box,
   Button,
-  IconButton,
   MenuItem,
   TextField,
   Typography
 } from "@mui/material"
 import { Formik } from "formik"
 import * as yup from "yup"
-import AddAPhotoIcon from '@mui/icons-material/AddAPhoto'
 import { useSubmit } from "react-router-dom"
 import { API } from "../../api"
 
@@ -22,6 +20,18 @@ const district = [
   "KHAOONA",
   "DAPAYA",
   "SALAKA",
+  "YAMAPA",
+  "YAOONA",
+  "WALANA",
+  "AYATA",
+  "HAMALA",
+  "MAKANA",
+  "SAKANA",
+  "BATALA",
+  "MAMANA",
+  "TAMANA",
+  "MALANA",
+  "THAPHAYA",
 ].sort()
 
 const validationSchema = yup.object({
@@ -61,6 +71,8 @@ export default function SignupStep4() {
           district: "",
           registerNumber: "",
           address: "",
+          nrcFront: "",
+          nrcBack: "",
         }}
         validationSchema={validationSchema}
         onSubmit={(values) => {
@@ -77,11 +89,16 @@ export default function SignupStep4() {
           handleChange,
           handleBlur,
           handleSubmit,
+          // setFieldValue,
           // isSubmitting,
         }) => (
-          <form method="post" onSubmit={handleSubmit} style={{
-            width: "27rem",
-          }}>
+          <form
+            encType="multipart/form-data"
+            method="post"
+            onSubmit={handleSubmit}
+            style={{
+              width: "27rem",
+            }}>
             <TextField
               fullWidth
               id="name"
@@ -159,7 +176,7 @@ export default function SignupStep4() {
                 defaultValue="(N)"
                 disabled
                 sx={{
-                  width: 60
+                  width: 70
                 }}
               />
               <TextField
@@ -169,7 +186,8 @@ export default function SignupStep4() {
                 value={values.registerNumber}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                error={touched.registerNumber && Boolean(errors.registerNumber)}
+                error={touched.registerNumber &&
+                  Boolean(errors.registerNumber)}
               />
             </Box>
             <TextField
@@ -184,53 +202,16 @@ export default function SignupStep4() {
               helperText={touched.address && errors.address}
               sx={{ minHeight: "5rem" }}
             />
-            <div style={{ background: "lightgray" }}>
-              <IconButton sx={{
-                height: "100px",
-                width: "100px",
-                margin: 15,
-              }}>
-                <AddAPhotoIcon sx={{
-                  scale: "5"
-                }} />
-              </IconButton>
-            </div>
-            <TextField
-              fullWidth
-              type="file"
-              id="nrcFront"
-              name="nrcFront"
-              helperText="Please select NRC front photo"
-            />
-            <hr />
-            <div style={{ background: "lightgray" }}>
-              <IconButton sx={{
-                height: "100px",
-                width: "100px",
-                margin: 15,
-              }}>
-                <AddAPhotoIcon sx={{
-                  scale: "5"
-                }} />
-              </IconButton>
-            </div>
-            <TextField
-              fullWidth
-              type="file"
-              id="nrcBack"
-              name="nrcBack"
-              helperText="Please select NRC back photo"
-            />
             <Button
               type="submit"
               variant="contained"
               sx={{ alignSelf: "center" }}
             >
-              continue
+              submit
             </Button>
           </form>
         )}
-      </Formik>
+      </Formik >
     </>
   )
 }

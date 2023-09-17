@@ -1,14 +1,24 @@
 import { Box, Typography } from "@mui/material"
-import { UserInfoContextValues, useUserInfo } from "../../providers/userInfoProvider"
-import { redirect } from "react-router-dom"
+import { UserInfoContextValues, useUserInfo } from "../../../providers/userInfoProvider"
 import { Person } from "@mui/icons-material"
-
-export function action() {
-  return redirect('/login')
-}
 
 const Profile = () => {
   const { userInfo } = useUserInfo() as UserInfoContextValues
+
+  // useEffect(() => {
+  //   API.get('/userinfo')
+  //     .then((res) => {
+  //       setUserInfo({
+  //         name: res.data.name,
+  //         balance: res.data.balance,
+  //         phoneNumber: res.data.phoneNumber,
+  //       })
+  //     })
+  //     .catch((error) => {
+  //       console.log("Error in user Provider: ", error)
+  //     })
+  // }, [])
+
   return (
     <Box
       display="flex"

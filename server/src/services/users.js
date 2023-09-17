@@ -6,29 +6,54 @@ const create = async (userModel) => {
   return prisma.user.create(userModel)
 }
 
-const get = async (id) => {
+const retrieveOne = async (userId, nrc = false) => {
   return prisma.user.findMany({
-    where: { id },
+    where: { userId },
     include: {
-      nrc: true,
+      nrc,
     }
   })
 }
 
-const remove = async (id) => {
-  await prisma.nrc.delete({
-    where: { id }
-  })
-  const user = await prisma.user.delete({
-    where: { id },
-  })
-  return prisma.password.delete({
-    where: { id: user.phoneNumber }
+const retrieveAll = async (nrc = false) => {
+  return prisma.user.findMany({
+    include: {
+      nrc
+    }
   })
 }
 
+const deleteOne = async (userId) => {
+  await prisma.nRCPhoto.delete({
+    where: { nrcphotoId: userId }
+  })
+
+  await prisma.nrc.delete({
+    where: { nrcId: userId }
+  })
+
+  await prisma.transaction.deleteMany({
+    where: { senderId: userId }
+  })
+
+  await prisma.transaction.deleteMany({
+    where: { receiverId: userId }
+  })
+
+  await prisma.user.delete({
+    where: { userId: userId },
+  })
+
+  return prisma.account.delete({
+    where: { id: userId }
+  })
+}
+
+// deleteOne("+959777360906").then(res => console.log(res))
+
 module.exports = {
   create,
-  get,
-  remove,
+  retrieveAll,
+  retrieveOne,
+  deleteOne,
 }

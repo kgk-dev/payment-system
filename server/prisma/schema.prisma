@@ -8,44 +8,65 @@ datasource db {
 }
 
 model Account {
-  id                   String        @id
-  password             String
-  balance              Float?        @default(0)
-  user                 User?
-  sentTransactions     Transaction[] @relation("SenderTransaction")
-  receivedTransactions Transaction[] @relation("ReceiverTransaction")
+  id       String   @id @unique
+  password String
+  balance  Float?   @default(0)
+  user     User?
+  register Boolean? @default(false)
 }
 
 model User {
-  id          Int     @id @default(autoincrement())
-  name        String
-  gender      String
-  address     String
-  nrc         Nrc?
-  account     Account @relation(fields: [phoneNumber], references: [id])
-  phoneNumber String  @unique
+  userId               String              @id
+  name                 String
+  gender               String
+  address              String
+  nrc                  Nrc?
+  account              Account             @relation(fields: [userId], references: [id])
+  UnregisterAccount    UnregisterAccount[]
+  sentTransactions     Transaction[]       @relation("SenderTransaction")
+  receivedTransactions Transaction[]       @relation("ReceiverTransaction")
 }
 
 model Nrc {
-  id             Int    @id @default(autoincrement())
+  nrcId          String    @id
   state          String
   district       String
   registerNumber String
-  user           User   @relation(fields: [userId], references: [id])
-  userId         Int    @unique
+  photo          NRCPhoto?
+  user           User      @relation(fields: [nrcId], references: [userId])
+}
+
+model NRCPhoto {
+  nrcphotoId String @id
+  front      String
+  back       String
+  nrc        Nrc?   @relation(fields: [nrcphotoId], references: [nrcId])
 }
 
 model Transaction {
-  id         String   @id @default(uuid())
-  amount     Float
-  date       DateTime
-  sender     Account  @relation("SenderTransaction", fields: [senderId], references: [id])
-  senderId   String
-  receiver   Account  @relation("ReceiverTransaction", fields: [receiverId], references: [id])
-  receiverId String
+  id           String   @id
+  amount       Float
+  date         DateTime
+  senderId     String
+  receiverId   String
+  sender       User?    @relation("SenderTransaction", fields: [senderId], references: [userId])
+  receiver     User?    @relation("ReceiverTransaction", fields: [receiverId], references: [userId])
+  senderName   String
+  receiverName String
 }
 
 model Admin {
   id       String @id
   password String
+}
+
+model UnregisterAccount {
+  userId String @id
+  user   User   @relation(fields: [userId], references: [userId])
+}
+
+model Feedback {
+  id      Int    @id @default(autoincrement())
+  name    String
+  message String
 }

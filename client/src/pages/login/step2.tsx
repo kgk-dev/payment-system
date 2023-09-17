@@ -3,31 +3,36 @@ import {
   TextField,
   Button,
   Box
-} from "@mui/material"
-import { useSubmit } from "react-router-dom"
-import { Formik } from "formik"
-import * as yup from "yup"
-import { API } from "../../api"
+} from '@mui/material'
+import { Formik } from 'formik'
+import * as yup from 'yup'
+import { API } from '../../api'
+import { useSubmit } from 'react-router-dom'
+import { OTPContextValue, useOTP } from '../../providers/otpProvider'
+import { errorNotify } from '../../components/notify'
+import 'react-toastify/dist/ReactToastify.css'
+import { ToastContainer } from 'react-toastify'
 
 const validationSchema = yup.object({
   otp: yup
     .string()
-    .matches(/[0-9]{6}/, "OTP must be 6 numbers")
-    .required("OTP is required")
+    .matches(/[0-9]{6}/, 'OTP must be 6 numbers')
+    .required('OTP is required')
 })
 
 export default function LoginStep2() {
   const submit = useSubmit()
+  const { OTP } = useOTP() as OTPContextValue
 
   return (
     <>
-      <Typography variant="h6" component={"h6"} mb={7}>
+      <ToastContainer />
+      <Typography variant='h6' component={'h6'} mb={7}>
         We have sent 6-digit OTP code to your mobile number.
       </Typography>
-
       <Formik
         initialValues={{
-          otp: ""
+          otp: OTP,
         }}
         validationSchema={validationSchema}
         onSubmit={({ otp }, { setSubmitting }) => {
@@ -38,8 +43,9 @@ export default function LoginStep2() {
               submit(null, { method: "post" })
             })
             .catch((error) => {
-              console.log("[Login] error 2", error)
+              console.log('[Login] error 2', error)
               setSubmitting(false)
+              errorNotify("Incorrect OTP")
             })
         }}
       >
@@ -53,11 +59,11 @@ export default function LoginStep2() {
           isSubmitting,
         }) => (
           <form onSubmit={handleSubmit}>
-            <Box minHeight="5rem">
+            <Box minHeight='5rem'>
               <TextField
-                id="otp"
-                name="otp"
-                label="6-digit OTP Code"
+                id='otp'
+                name='otp'
+                label='6-digit OTP Code'
                 value={values.otp}
                 onChange={handleChange}
                 onBlur={handleBlur}
@@ -66,8 +72,8 @@ export default function LoginStep2() {
               />
             </Box>
             <Button
-              type="submit"
-              variant="contained"
+              type='submit'
+              variant='contained'
               disabled={isSubmitting}
             >
               continue

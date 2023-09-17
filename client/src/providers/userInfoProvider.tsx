@@ -1,4 +1,10 @@
-import { PropsWithChildren, createContext, useContext, useEffect, useState } from "react"
+import {
+  PropsWithChildren,
+  createContext,
+  useContext,
+  useEffect,
+  useState
+} from "react"
 import { API } from "../api"
 
 export type UserInfo = {
@@ -22,16 +28,18 @@ const UserInfoProvider = ({ children }: PropsWithChildren) => {
   })
 
   useEffect(() => {
-    try {
-      API.get('/userinfo').then((res) =>
+    API.get('/userinfo')
+      .then((res) => {
+        console.log("res in userinfo: ", res)
         setUserInfo({
           name: res.data.name,
           balance: res.data.balance,
           phoneNumber: res.data.phoneNumber,
-        }))
-    } catch (error) {
-      console.log("Error in user info: ", error)
-    }
+        })
+      })
+      .catch((error) => {
+        console.log("Error in user Provider: ", error)
+      })
   }, [])
 
   const contextValue = { userInfo, setUserInfo }

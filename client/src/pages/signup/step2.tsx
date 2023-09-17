@@ -3,6 +3,9 @@ import { useSubmit } from 'react-router-dom'
 import { Formik } from 'formik'
 import * as yup from 'yup'
 import { API } from '../../api'
+import { OTPContextValue, useOTP } from '../../providers/otpProvider'
+import { errorNotify } from '../../components/notify'
+import { ToastContainer } from 'react-toastify'
 
 const validationSchema = yup.object({
   otp: yup
@@ -13,16 +16,17 @@ const validationSchema = yup.object({
 
 export default function SignupStep2() {
   const submit = useSubmit()
+  const { OTP } = useOTP() as OTPContextValue
 
   return (
     <>
+      <ToastContainer />
       <Typography variant='h6' component={'h6'} mb={7}>
         We have sent 6-digit OTP code to your mobile number.
       </Typography>
-
       <Formik
         initialValues={{
-          otp: ''
+          otp: OTP
         }}
         validationSchema={validationSchema}
         onSubmit={({ otp }, { setSubmitting }) => {
@@ -31,6 +35,10 @@ export default function SignupStep2() {
             .then(() => {
               setSubmitting(false)
               submit(null, { method: 'post' })
+            })
+            .catch((error) => {
+              console.log("error in setp2: ", error.message)
+              errorNotify("Wrong OTP")
             })
         }}
       >

@@ -1,21 +1,21 @@
 import WalletIcon from '@mui/icons-material/Wallet'
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney'
 import HistoryIcon from '@mui/icons-material/History'
-import ChatIcon from '@mui/icons-material/Chat'
 import FCard from '../../components/card'
+import { Feedback } from '@mui/icons-material'
 
 const features = [
   "E Wallet",
   "Transfer Money",
   "Transaction History",
-  "Chat"
+  "Give Feedback",
 ]
 
 const logos = [
   WalletIcon,
   AttachMoneyIcon,
   HistoryIcon,
-  ChatIcon,
+  Feedback,
 ]
 
 export default function AccountFeatures() {

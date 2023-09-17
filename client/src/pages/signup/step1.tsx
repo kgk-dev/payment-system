@@ -4,19 +4,26 @@ import { Formik } from 'formik'
 import * as yup from 'yup'
 import { useSubmit } from 'react-router-dom'
 import { API } from '../../api'
+import { OTPContextValue, useOTP } from '../../providers/otpProvider'
+import { errorNotify } from '../../components/notify'
+import { ToastContainer } from 'react-toastify'
 
 const validationSchema = yup.object({
   phoneNumber: yup
     .string()
-    .matches(/^9[0-9]{3}[0-9]{6}$/, 'Invalid phone number')
+    .matches(
+      /^(7[7-9])|(9[5-9])|(6[6-9])|(2[5-7])|(4[0-5])[0-9]{7}/,
+      'Invalid phone number')
     .required('Phone number is required')
 })
 
 export default function SignupStep1() {
   const submit = useSubmit()
+  const { setOTP } = useOTP() as OTPContextValue
 
   return (
     <>
+      <ToastContainer />
       <Typography variant='h5' fontWeight='bold'>
         Sing Up For Pay
       </Typography>
@@ -35,12 +42,13 @@ export default function SignupStep1() {
               phoneNumber: "+95" + phoneNumber
             })
             .then((res) => {
-              console.log("data: ", res.data.otp)
+              setOTP(res.data.otp)
               setSubmitting(false)
               submit(null, { method: 'post' })
             })
             .catch(() => {
               setSubmitting(false)
+              errorNotify("Invalid Phone Number")
             })
         }}
       >

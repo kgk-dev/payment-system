@@ -5,7 +5,8 @@ import * as actions from '../pages/signup/actions'
 import SignupStep2 from '../pages/signup/step2'
 import SignupStep3 from '../pages/signup/step3'
 import SignupStep4 from '../pages/signup/step4'
-import Last from '../pages/signup/step5'
+import Last from '../pages/signup/step6'
+import SignupStep5 from '../pages/signup/step5'
 
 const router: RouteObject = {
   path: '/signup',
@@ -34,6 +35,11 @@ const router: RouteObject = {
     {
       path: '/signup/5',
       action: actions.five,
+      element: <SignupStep5 />
+    },
+    {
+      path: '/signup/6',
+      action: actions.six,
       element: <Last />
     },
   ]

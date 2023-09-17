@@ -4,12 +4,14 @@ import SideNav from './sidenav'
 import { Outlet } from 'react-router-dom'
 import theme from '../theme'
 
-export default function Admin() {
+export default function User() {
   return (
     <ThemeProvider theme={theme}>
-      <Box height="100vh">
+      <Box
+        minHeight="100vh"
+      >
         <HeaderBar />
-        <Grid item container height="90%">
+        <Grid item container height="91vh">
           <Grid item xs={3}>
             <SideNav />
           </Grid>

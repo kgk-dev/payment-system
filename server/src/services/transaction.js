@@ -1,28 +1,50 @@
 const prisma = require('../prisma')
 console.log("[connected] transaction database")
 
-const create = async ({ amount, date, senderId, receiverId }) => {
+const create = async ({
+  id,
+  amount,
+  date,
+  senderId,
+  receiverId,
+  senderName,
+  receiverName,
+}) => {
   return prisma.transaction.create({
     data: {
+      id,
       amount,
       date,
       senderId,
       receiverId,
-    }
+      senderName,
+      receiverName,
+    },
   })
 }
 
-const get = async (id) => {
-  return prisma.password.findUnique({
-    where: { id },
-    include: {
+const retrieveOne = async (userId) => {
+  return prisma.user.findUnique({
+    where: {
+      userId
+    },
+    select: {
       sentTransactions: true,
       receivedTransactions: true,
     }
   })
 }
 
+const retrieveAll = async () => {
+  return prisma.transaction.findMany({
+    orderBy: {
+      date: "desc",
+    }
+  })
+}
+
 module.exports = {
   create,
-  get,
+  retrieveOne,
+  retrieveAll,
 }

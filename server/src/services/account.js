@@ -2,48 +2,53 @@ const prisma = require('../prisma')
 
 console.log("[connected] account database")
 
-const get = async (id) => {
+const retrieveAll = async () => {
+  return prisma.account.findMany()
+}
+
+const retrieveOne = async (accountId) => {
   return prisma.account.findUnique({
-    where: { id },
+    where: { id: accountId },
     include: {
-      user: true
+      user: true,
     }
   })
 }
 
-const create = async (id, password) => {
+const create = async (accountId, password) => {
   return prisma.account.create({
     data: {
-      id,
+      id: accountId,
       password
     },
   })
 }
 
-const updateBalance = async (id, balance) => {
+const updateBalance = async (accountId, balance) => {
   return prisma.account.update({
-    where: { id },
+    where: { id: accountId },
     data: { balance },
   })
 }
 
-const updatePasswrod = async (id, newPassword) => {
+const updatePassword = async (accountId, newPassword) => {
   return prisma.account.update({
-    where: { id },
+    where: { id: accountId },
     data: { password: newPassword }
   })
 }
 
-const remove = async (id) => {
+const remove = async (accountId) => {
   return prisma.account.delete({
-    where: { id }
+    where: { id: accountId }
   })
 }
 
 module.exports = {
   create,
-  get,
-  updatePasswrod,
+  retrieveAll,
+  retrieveOne,
+  updatePassword,
   updateBalance,
   remove,
 }

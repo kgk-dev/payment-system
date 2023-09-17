@@ -17,5 +17,9 @@ export async function four() {
 }
 
 export async function five() {
+  return redirect('/signup/6')
+}
+
+export async function six() {
   return redirect('/')
 }

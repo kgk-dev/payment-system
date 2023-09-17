@@ -4,6 +4,10 @@ import { grey } from '@mui/material/colors'
 import { Formik } from 'formik'
 import * as yup from 'yup'
 import { API } from '../../api'
+import { OTPContextValue, useOTP } from '../../providers/otpProvider'
+import 'react-toastify/dist/ReactToastify.css'
+import { ToastContainer } from 'react-toastify'
+import { errorNotify } from '../../components/notify'
 
 const validationSchema = yup.object({
   phoneNumber: yup
@@ -14,9 +18,11 @@ const validationSchema = yup.object({
 
 export default function LoginStep1() {
   const submit = useSubmit()
+  const { setOTP } = useOTP() as OTPContextValue
 
   return (
     <>
+      <ToastContainer />
       <Typography variant='h5' fontWeight='bold' mt={1} mb={7}>
         Login
       </Typography>
@@ -29,12 +35,14 @@ export default function LoginStep1() {
           setSubmitting(true)
           API.post('/login', { phoneNumber: '+95' + phoneNumber })
             .then((res) => {
-              console.log(res.data.otp)
+              setOTP(res.data.otp)
+              setSubmitting(false)
               submit(null, { method: 'post' })
             })
             .catch((error) => {
               console.log('[Login] start1 error', error)
               setSubmitting(false)
+              errorNotify("Unregistered Phone Number")
             })
         }}
       >

@@ -6,38 +6,62 @@ import {
   Button,
   Checkbox,
   FormControlLabel,
+  IconButton,
+  InputAdornment,
   TextField
 } from '@mui/material'
 import { useFormik } from 'formik'
+import { Clear } from '@mui/icons-material'
+
+type TransactionsValues = {
+  all?: TransactionType[],
+  sent?: TransactionType[],
+  received?: TransactionType[],
+}
 
 export default function Transactions() {
   const [transactions, setTransactions] = useState<TransactionType[]>([])
+  const [transactionsById, setTransactionsByID] = useState<TransactionsValues>({
+    all: [],
+    sent: [],
+    received: [],
+  })
+
   const formik = useFormik({
     initialValues: {
       phoneNumber: "",
       sent: false,
       received: false,
     },
-    onSubmit: (values, { setValues }) => {
-      console.log(values)
-      setValues({
-        phoneNumber: "",
-        sent: false,
-        received: false,
+    onSubmit: ({ phoneNumber, sent, received }) => {
+      phoneNumber = "+95" + phoneNumber
+      API.post(
+        '/admin/transactions/userId',
+        {
+          phoneNumber,
+          sent,
+          received
+        }
+      ).then((res) => {
+        setTransactionsByID({
+          all: [...res.data.sent, ...res.data.received],
+          sent: res.data.sent,
+          received: res.data.received,
+        })
       })
     }
   })
 
   useEffect(() => {
-    API.get('/admin/transactions')
+    API.get(`/admin/transactions`)
       .then((res) => {
-        console.log('Transactions data: ', res.data)
         setTransactions(res.data.transactions)
       })
       .catch((error) => {
         console.log("Transaction error: ", error)
       })
   }, [])
+
   return (
     <Box>
       <form
@@ -56,12 +80,26 @@ export default function Transactions() {
           value={formik.values.phoneNumber}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position='end'>
+                <IconButton
+                  onClick={() => formik.setFieldValue("phoneNumber", "")}
+                >
+                  <Clear />
+                </IconButton>
+              </InputAdornment>
+            )
+          }}
         />
         <FormControlLabel
           control={
             <Checkbox
               checked={formik.values.sent}
-              onChange={formik.handleChange}
+              onChange={() => {
+                formik.setFieldValue('sent', !formik.values.sent)
+                formik.setFieldValue('received', false)
+              }}
               name="sent" />
           }
           label="Sent"
@@ -70,7 +108,10 @@ export default function Transactions() {
           control={
             <Checkbox
               checked={formik.values.received}
-              onChange={formik.handleChange}
+              onChange={() => {
+                formik.setFieldValue('received', !formik.values.received)
+                formik.setFieldValue('sent', false)
+              }}
               name="received" />
           }
           label="Received"
@@ -80,14 +121,34 @@ export default function Transactions() {
         </Button>
       </form>
       <Box
+        marginTop={1}
         component='div'
-        height="70vh"
+        height="80vh"
         overflow="auto"
       >
         {
-          transactions.map((transaction) => {
-            return <Transaction {...transaction} />
-          })
+          formik.values.phoneNumber
+            ? (
+              formik.values.sent && !formik.values.received
+                ? (
+                  transactionsById.sent?.map((transaction) => {
+                    return <Transaction {...transaction} />
+                  })
+                ) : formik.values.received && !formik.values.sent
+                  ? (
+                    transactionsById.received?.map((transaction) => {
+                      return <Transaction {...transaction} />
+                    })
+                  ) : (
+                    transactionsById.all?.map((transaction) =>
+                      <Transaction {...transaction} />
+                    )
+                  )
+            ) : (
+              transactions.map((transaction) => {
+                return <Transaction {...transaction} />
+              })
+            )
         }
       </Box>
     </Box>
