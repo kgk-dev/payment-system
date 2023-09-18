@@ -12,7 +12,10 @@ import { errorNotify } from '../../components/notify'
 const validationSchema = yup.object({
   phoneNumber: yup
     .string()
-    .matches(/^9[0-9]{3}[0-9]{6}$/, 'Invalid phone number')
+    .max(10)
+    .matches(
+      /9(7[7-9])[0-9]{7}|9(9[5-9])[0-9]{7}|9(6[6-9])[0-9]{7}|9(2[5-7])[0-9]{5,7}|9(4[0-5])[0-9]{7}/,
+      'Invalid phone number')
     .required('Phone number is required')
 })
 

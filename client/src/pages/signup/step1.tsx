@@ -11,8 +11,9 @@ import { ToastContainer } from 'react-toastify'
 const validationSchema = yup.object({
   phoneNumber: yup
     .string()
+    .max(10)
     .matches(
-      /^(7[7-9])|(9[5-9])|(6[6-9])|(2[5-7])|(4[0-5])[0-9]{7}/,
+      /9(7[7-9])[0-9]{7}|9(9[5-9])[0-9]{7}|9(6[6-9])[0-9]{7}|9(2[5-7])[0-9]{5,7}|9(4[0-5])[0-9]{7}/,
       'Invalid phone number')
     .required('Phone number is required')
 })
